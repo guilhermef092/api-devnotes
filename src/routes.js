@@ -6,9 +6,9 @@ const NoteController = require('./controllers/NoteController');
 router.get('/ping', NoteController.ping);
 
 router.get('/notes', NoteController.all);
-router.get('/notes/:id', NoteController.one);
+router.get('/note/:id', NoteController.one);
 router.post('/notes', NoteController.new);
-router.put('/notes/:id', NoteController.edit);
-router.delete('/notes/:id', NoteController.delete);
+router.put('/note/:id', NoteController.edit);
+router.delete('/note/:id', NoteController.delete);
 
 module.exports = router;
