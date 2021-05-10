@@ -9,11 +9,12 @@ module.exports = {
     let json = { error: '', result: [] };
 
     let notes = await NoteService.getAll();
-    
+
     for (let i in notes) {
       json.result.push({
         id: notes[i].id,
-        title: notes[i].title
+        title: notes[i].title,
+        body: notes[i].body,
       });
     }
     res.json(json);
@@ -32,15 +33,54 @@ module.exports = {
     res.json(json);
   },
 
-  new: async () => {
+  new: async (req, res) => {
+    let json = { error: '', result: {} };
 
+    let { title, body } = req.body;
+
+    if (title && body) {
+      let noteId = await NoteService.add(title, body);
+
+      json.result = {
+        id: noteId,
+        title,
+        body
+      };
+
+    } else {
+      json.error = 'Campos não enviados';
+    }
+
+    res.json(json);
   },
 
-  edit: async () => {
+  edit: async (req, res) => {
+    let json = { error: '', result: {} };
 
+    let id = req.params.id;
+    let { title, body } = req.body;
+
+    if (id && title && body) {
+      await NoteService.update(id, title, body);
+
+      json.result = {
+        id,
+        title,
+        body
+      };
+
+    } else {
+      json.error = 'Campos não enviados';
+    }
+
+    res.json(json);
   },
 
-  delete: async () => {
+  delete: async (req, res) => {
+    let json = { error: '', result: {} };
 
+    await NoteService.delete(req.params.id);
+
+    res.json(json);
   }
 }
